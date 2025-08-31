@@ -31,13 +31,14 @@ public class VirusBinder : MonoBehaviour
         target_1 = t_1;
         target_2 = t_2;
 
-        target_1.death.AddListener(Rebind);
-        target_2.death.AddListener(Rebind);
-
         if (target_1 == null || target_2 == null)
         {
             Rebind();
+            return;
         }
+
+        target_1.death.AddListener(Rebind);
+        target_2.death.AddListener(Rebind);
 
         target_1.GetComponent<VirusBlock>().type = t;
         target_2.GetComponent<VirusBlock>().type = t;
@@ -77,6 +78,7 @@ public class VirusBinder : MonoBehaviour
             if (target_2 == null)
             {
                 Destroy(gameObject);
+                return;
             }
             else
             {
@@ -105,6 +107,7 @@ public class VirusBinder : MonoBehaviour
         if (target_1 == null)
         {
             Destroy(gameObject);
+            return;
         }
 
         Vector3 p_1 = target_1.transform.position;

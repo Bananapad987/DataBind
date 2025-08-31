@@ -35,7 +35,7 @@ public class Attacker : MonoBehaviour
     /// <summary>
     /// Everytime the timer has increase by this amount, the brust will increase
     /// </summary>
-    public float burst_increase_interval = 30;
+    public float burst_increase_interval = 20;
 
     /// <summary>
     /// If the bursts have increased by this amount, then the attack_cooldown will decrease
@@ -65,6 +65,8 @@ public class Attacker : MonoBehaviour
     public float stopwatch = 0;
 
     public int[] weights = { 3, 0, 0, 0 };
+
+    public int black_block_level = 10;
 
     int level = 0;
 
@@ -108,7 +110,14 @@ public class Attacker : MonoBehaviour
 
             if (temp <= 0)
             {
-                return (VirusBinder.TYPE)i;
+                VirusBinder.TYPE ans = (VirusBinder.TYPE)i;
+
+                if (ans == 0 && level >= black_block_level)
+                {
+                    return VirusBinder.TYPE.black;
+                }
+
+                return ans;
             }
         }
 
