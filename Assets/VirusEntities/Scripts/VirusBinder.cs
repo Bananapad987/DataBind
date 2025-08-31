@@ -1,22 +1,23 @@
 using UnityEngine;
+using UnityEngine.Analytics;
 
-// [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(LineRenderer))]
 public class VirusBinder : MonoBehaviour
 {
-    LineRenderer lineRenderer;
+    LineRenderer line_renderer;
 
     public enum TYPE
     {
         white,
+        blue,
         red,
         yellow,
-        blue
     }
 
     VirusBlock target_1;
     VirusBlock target_2;
 
-    public float initial_velocity = 1;
+    public float initial_velocity = 10;
     public float raycast_length = 1000;
 
     public void Bind(VirusBlock t_1, VirusBlock t_2, TYPE t)
@@ -45,42 +46,42 @@ public class VirusBinder : MonoBehaviour
         target_1.GetComponent<SpriteRenderer>().color = c;
         target_2.GetComponent<SpriteRenderer>().color = c;
 
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        line_renderer = gameObject.GetComponent<LineRenderer>();
 
-        lineRenderer.startWidth = 0.15f;
-        lineRenderer.endWidth = 0.15f;
-
-        lineRenderer.startColor = c;
-        lineRenderer.endColor = c;
+        c.a = 0.2f;
+        line_renderer.startColor = c;
+        line_renderer.endColor = c;
 
         Vector3 p_1 = target_1.transform.position;
         Vector3 p_2 = target_2.transform.position;
 
-        lineRenderer.SetPosition(0, target_1.transform.position);
-        lineRenderer.SetPosition(1, target_2.transform.position);
+        line_renderer.SetPosition(0, target_1.transform.position);
+        line_renderer.SetPosition(1, target_2.transform.position);
 
         transform.position = (p_1 + p_2) / 2;
 
         target_1.GetComponent<Rigidbody2D>().linearVelocity = (transform.position - p_1).normalized * initial_velocity;
         target_2.GetComponent<Rigidbody2D>().linearVelocity = (transform.position - p_2).normalized * initial_velocity;
 
+        target_1.GetComponent<Collider2D>().enabled = true;
+        target_2.GetComponent<Collider2D>().enabled = true;
+
     }
 
-    void Rebind(VirusBlock target)
+    void Rebind()
     {
-        if (target_1 == target)
+        if (target_1 == null)
         {
-            target_1 = null;
+            target_1 = target_2;
         }
         else
         {
-            target_1 = target_2;
             target_2 = null;
         }
 
         if (target_1 == null && target_2 == null)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
 
         RaycastHit2D hit = Physics2D.Raycast(target_1.transform.position, target_1.GetComponent<Rigidbody2D>().linearVelocity.normalized, raycast_length, 1 << 7);
@@ -88,18 +89,27 @@ public class VirusBinder : MonoBehaviour
         if (hit.collider != null)
         {
             transform.position = hit.point;
-            lineRenderer.SetPosition(0,target_1.transform.position);
-            lineRenderer.SetPosition(1,target_2.transform.position);
+            line_renderer.SetPosition(0, target_1.transform.position);
+            line_renderer.SetPosition(1, target_2.transform.position);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (target_1 == null || target_1.gameObject == null)
+        {
+            return;
+        }
+
         Vector3 p_1 = target_1.transform.position;
 
-        lineRenderer.SetPosition(0,target_1.transform.position);
-        lineRenderer.SetPosition(1,target_2.transform.position);
+        line_renderer.SetPosition(0, target_1.transform.position);
+
+        if (target_2 != null && target_2.gameObject != null)
+        {
+            line_renderer.SetPosition(1, target_2.transform.position);   
+        }
 
         if ((p_1 - transform.position).sqrMagnitude < 1)
         {

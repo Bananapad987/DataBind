@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 public class VirusTester : MonoBehaviour
 {
     Scene scene;
-    public GameObject vb_prefab;
+    public GameObject virus_binder_prefab;
+
+    public GameObject player_object;
 
     HashSet<VirusBlock> binded = new();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -44,8 +46,10 @@ public class VirusTester : MonoBehaviour
 
             if (t_1 != null && t_2 != null)
             {
-                VirusBinder vb = Instantiate(vb_prefab).GetComponent<VirusBinder>();
-                vb.Bind(t_1, t_2, VirusBinder.TYPE.red);
+                VirusBinder vb = Instantiate(virus_binder_prefab).GetComponent<VirusBinder>();
+                t_1.player_object = player_object;
+                t_2.player_object = player_object;
+                vb.Bind(t_1, t_2, VirusBinder.TYPE.blue);
 
                 binded.Add(t_1);
                 binded.Add(t_2);

@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.3584906, g: 0, b: 0, a: 0.38431373}
+  m_Color: {r: 0.3584906, g: 0, b: 0, a: 0.60784316}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -124,7 +124,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9197712984585412954}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -165,5 +165,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f44bb49a1245444bf4272d4d73143d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  duration: 5
