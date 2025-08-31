@@ -1,7 +1,10 @@
 fileFormatVersion: 2
-guid: bb75a94000a5e684890ad00cc04a913a
+guid: 40e117e347cbd0144af2c5a09191741d
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -767514390132504936
+    second: Databind13_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WetBit_0
+      name: Heart1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -110,10 +113,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: aab8060c87fc84e4cb5e71cb950d87ec
-      internalID: 1621739407
+      spriteID: bb4475f996d0ca480800000000000000
+      internalID: -8886713217412807493
       vertices: []
       indices: 
       edges: []
@@ -122,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 4ec3227e6451be74c89e21831d6935c7
+    spriteID: e1cf1663f753f3748841501ff10b72b8
     internalID: 0
     vertices: []
     indices: 
@@ -132,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WetBit_0: 1621739407
+      Heart1_0: -8886713217412807493
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
