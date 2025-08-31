@@ -94,7 +94,7 @@ public class Attacker : MonoBehaviour
             }
 
             difficulty_timer = burst_increase_interval;
-            weights[(level % 4) + 1] += 1;
+            weights[(level % 3) + 1] += 1;
         }
     }
 
