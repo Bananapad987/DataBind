@@ -14,12 +14,12 @@ public class Attacker : MonoBehaviour
     /// <summary>
     /// time between the first block spawning and the second block spawning
     /// </summary>
-    public float burst_time = 0.5f;
+    public float burst_time = 0.25f;
 
     /// <summary>
     /// time between the second block spawning and squares actually binding
     /// </summary>
-    public float bind_time = 0.5f;
+    public float bind_time = 0.25f;
 
     /// <summary>
     /// Amount of virus blocks summoned each attack
@@ -92,7 +92,7 @@ public class Attacker : MonoBehaviour
             }
 
             difficulty_timer = burst_increase_interval;
-            weights[(level % 4) + 1] += 1;
+            weights[(level % 3) + 1] += 1;
         }
     }
 
