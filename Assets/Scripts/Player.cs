@@ -4,12 +4,12 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public int speed = 10;
+    public float speed = 10;
 
     int max_health = 5;
     int hearts;
 
-    Vector2 direction = Vector2.zero;
+    public Vector2 direction = Vector2.zero;
     Rigidbody2D rb;
 
     public float dash_velocity = 60F;
@@ -20,14 +20,18 @@ public class Player : MonoBehaviour
     bool can_dash = true;
     Coroutine curr_dash = null;
 
+    Coroutine has_iframes = null;
+    float iframe_duration = 1;
+
+    Coroutine is_slowed = null;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         hearts = max_health;
-        Debug.Log("Start");
-
     }
+
     void FixedUpdate()
     {
         if (curr_dash == null)
@@ -45,8 +49,15 @@ public class Player : MonoBehaviour
             if (direction != Vector2.zero)
             {
                 curr_dash = StartCoroutine("Dash");
+                if (has_iframes != null)
+                {
+                    StopCoroutine(has_iframes);
+                }
+
+                has_iframes = StartCoroutine(Iframes(dash_duration));
             }
         }
+        
         if (!can_dash && curr_dash == null)
         {
             if (dash_cooldown >= 0)
@@ -72,13 +83,47 @@ public class Player : MonoBehaviour
         curr_dash = null;
     }
 
-    void TakeDamage()
+    public void Slow(float slow_percentage, float slow_duration) {
+        if (is_slowed != null)
+        {
+            StopCoroutine(is_slowed);
+        }
+        else
+        {
+            is_slowed = StartCoroutine(Slowed(slow_percentage, slow_duration));
+        }
+    }
+
+    public IEnumerator Slowed(float slow_percentage, float slow_duration)
     {
+        float amt = speed * slow_percentage;
+        speed -= amt;
+        yield return new WaitForSeconds(slow_duration);
+        speed += amt;
+
+        is_slowed = null;
+    }
+
+    IEnumerator Iframes(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        has_iframes = null;
+    }
+
+    public void TakeDamage()
+    {
+        if (has_iframes != null)
+        {
+            return;
+        }
+
         hearts--;
         if (hearts == 0)
         {
             Died();
         }
+
+        has_iframes = StartCoroutine(Iframes(iframe_duration));
     }
 
     void Heal()
