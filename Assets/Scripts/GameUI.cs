@@ -29,22 +29,22 @@ public class GameUI : MonoBehaviour
     void Update()
     {
         // DEBUG
-        // if (Input.GetKeyDown(KeyCode.D))
-        // {
-        //     IncreaseMaxHealth();
-        // }
-        // if (Input.GetKeyDown(KeyCode.A))
-        // {
-        //     DecreaseMaxHealth();
-        // }
-        // if (Input.GetKeyDown(KeyCode.W))
-        // {
-        //     ChangeHealth(1);
-        // }
-        // if (Input.GetKeyDown(KeyCode.S))
-        // {
-        //     ChangeHealth(-1);
-        // }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            IncreaseMaxHealth();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            DecreaseMaxHealth();
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            ChangeHealth(1);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ChangeHealth(-1);
+        }   
     }
 
     public void SetHealth(float max_health_, float curr_health_)
