@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "DataBind.sln"
+    "dotnet.defaultSolution": "GameJam.sln"
 }

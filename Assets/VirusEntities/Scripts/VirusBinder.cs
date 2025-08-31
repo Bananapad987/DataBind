@@ -12,13 +12,19 @@ public class VirusBinder : MonoBehaviour
         blue,
         red,
         yellow,
+        black
     }
 
-    VirusBlock target_1;
-    VirusBlock target_2;
+    public VirusBlock target_1;
+    public VirusBlock target_2;
+
+    public Sprite[] sprites;
+    public Color[] colors = {Color.white, Color.blue, Color.red, Color.yellow, Color.black};
 
     public float initial_velocity = 10;
     public float raycast_length = 1000;
+
+    bool binded = false;
 
     public void Bind(VirusBlock t_1, VirusBlock t_2, TYPE t)
     {
@@ -28,26 +34,20 @@ public class VirusBinder : MonoBehaviour
         target_1.death.AddListener(Rebind);
         target_2.death.AddListener(Rebind);
 
-        Color c = Color.white;
-
-        switch (t)
+        if (target_1 == null || target_2 == null)
         {
-            case TYPE.red:
-                c = Color.red;
-                break;
-            case TYPE.yellow:
-                c = Color.yellow;
-                break;
-            case TYPE.blue:
-                c = Color.blue;
-                break;
+            Rebind();
         }
 
-        target_1.GetComponent<SpriteRenderer>().color = c;
-        target_2.GetComponent<SpriteRenderer>().color = c;
+        target_1.GetComponent<VirusBlock>().type = t;
+        target_2.GetComponent<VirusBlock>().type = t;
+
+        target_1.GetComponent<SpriteRenderer>().sprite = sprites[(int)t];
+        target_2.GetComponent<SpriteRenderer>().sprite = sprites[(int)t];
 
         line_renderer = gameObject.GetComponent<LineRenderer>();
 
+        Color c = colors[(int)t];
         c.a = 0.2f;
         line_renderer.startColor = c;
         line_renderer.endColor = c;
@@ -66,22 +66,22 @@ public class VirusBinder : MonoBehaviour
         target_1.GetComponent<Collider2D>().enabled = true;
         target_2.GetComponent<Collider2D>().enabled = true;
 
+        binded = true;
+
     }
 
     void Rebind()
     {
         if (target_1 == null)
         {
-            target_1 = target_2;
-        }
-        else
-        {
-            target_2 = null;
-        }
-
-        if (target_1 == null && target_2 == null)
-        {
-            Destroy(gameObject);
+            if (target_2 == null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                target_1 = target_2;
+            }
         }
 
         RaycastHit2D hit = Physics2D.Raycast(target_1.transform.position, target_1.GetComponent<Rigidbody2D>().linearVelocity.normalized, raycast_length, 1 << 7);
@@ -97,16 +97,21 @@ public class VirusBinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target_1 == null || target_1.gameObject == null)
+        if (!binded)
         {
             return;
+        }
+
+        if (target_1 == null)
+        {
+            Destroy(gameObject);
         }
 
         Vector3 p_1 = target_1.transform.position;
 
         line_renderer.SetPosition(0, target_1.transform.position);
 
-        if (target_2 != null && target_2.gameObject != null)
+        if (target_2 != null)
         {
             line_renderer.SetPosition(1, target_2.transform.position);   
         }

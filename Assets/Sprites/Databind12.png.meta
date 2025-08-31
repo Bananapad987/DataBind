@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -56,7 +56,7 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -108,7 +108,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -121,12 +121,60 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    outline: []
+    outline:
+    - - {x: 2, y: -15}
+      - {x: 13, y: -15}
+      - {x: 13, y: -13}
+      - {x: 18, y: -13}
+      - {x: 18, y: -5}
+      - {x: 20, y: -5}
+      - {x: 20, y: 11}
+      - {x: 13, y: 11}
+      - {x: 13, y: 13}
+      - {x: 4, y: 13}
+      - {x: 4, y: 16}
+      - {x: -8, y: 16}
+      - {x: -8, y: 14}
+      - {x: -14, y: 14}
+      - {x: -14, y: 11}
+      - {x: -18, y: 11}
+      - {x: -18, y: 3}
+      - {x: -21, y: 3}
+      - {x: -21, y: -9}
+      - {x: -17, y: -9}
+      - {x: -17, y: -13}
+      - {x: -11, y: -13}
+      - {x: -11, y: -18}
+      - {x: 2, y: -18}
     customData: 
-    physicsShape: []
+    physicsShape:
+    - - {x: 2, y: -15}
+      - {x: 13, y: -15}
+      - {x: 13, y: -13}
+      - {x: 18, y: -13}
+      - {x: 18, y: -5}
+      - {x: 20, y: -5}
+      - {x: 20, y: 11}
+      - {x: 13, y: 11}
+      - {x: 13, y: 13}
+      - {x: 4, y: 13}
+      - {x: 4, y: 16}
+      - {x: -8, y: 16}
+      - {x: -8, y: 14}
+      - {x: -14, y: 14}
+      - {x: -14, y: 11}
+      - {x: -18, y: 11}
+      - {x: -18, y: 3}
+      - {x: -21, y: 3}
+      - {x: -21, y: -9}
+      - {x: -17, y: -9}
+      - {x: -17, y: -13}
+      - {x: -11, y: -13}
+      - {x: -11, y: -18}
+      - {x: 2, y: -18}
     bones: []
     spriteID: 83f49e445761e284ea9c393cec771eb9
-    internalID: 0
+    internalID: 2065761269
     vertices: []
     indices: 
     edges: []
