@@ -149,10 +149,10 @@ public class Player : MonoBehaviour
             return;
         }
 
-        StartCoroutine(HitFlash());
-        gui.ChangeHealth(-1);
-        curr_health--;
-        if (curr_health == 0)
+        hearts--;
+        GameMaster.sound_manager.PlaySFX(SoundManager.SFX.hit, Vector3.zero);
+
+        if (hearts == 0)
         {
             Died();
         }

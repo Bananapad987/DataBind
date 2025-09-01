@@ -7,7 +7,8 @@ public class VirusProjectile : MonoBehaviour
         if (collision.gameObject.TryGetComponent<Player>(out var p))
         {
             p.TakeDamage();
-            Destroy(gameObject);
         }
+
+        Destroy(gameObject);
     }
 }
