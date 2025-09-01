@@ -16,27 +16,44 @@ public class GameMaster : MonoBehaviour
 
     public GameObject grid_prefab;
     public static GameObject grid_obj;
+
+
+    public GameObject blue_screen_prefab;
+    public static BlueScreen blue_screen;
     public static Camera cam;
+
+
+    public int highscore = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         sound_manager = Instantiate(sound_manager_prefab).GetComponent<SoundManager>();
         title = Instantiate(title_prefab).GetComponent<Title>();
+
+        blue_screen = Instantiate(blue_screen_prefab).GetComponent<BlueScreen>();
+        blue_screen.restart.onClick.AddListener(StartGame);
+        
+        blue_screen.quit.onClick.AddListener(BackToTitle);
+        blue_screen.gameObject.SetActive(false);
+
         title.start.onClick.AddListener(StartGame);
         cam = GetComponentInChildren<Camera>();
 
-        
+        grid_obj = Instantiate(grid_prefab);
     }
 
     void StartGame()
     {
-        grid_obj = Instantiate(grid_prefab);
+        blue_screen.gameObject.SetActive(false);
+
         title.gameObject.SetActive(false);
         player = Instantiate(player_prefab).GetComponent<Player>();
         player.Start();
+        player.death.AddListener(EndGame);
 
         cam.transform.parent = player.transform;
+        cam.transform.position = Vector2.zero;
         sound_manager.transform.parent = player.transform;
         attacker = Instantiate(attacker_prefab).GetComponent<Attacker>();
 
@@ -44,7 +61,6 @@ public class GameMaster : MonoBehaviour
         player.gui.pause.onClick.AddListener(PauseGame);
         player.gui.unpause.onClick.AddListener(UnpauseGame);
 
-        
     }
 
     void PauseGame()
@@ -57,16 +73,34 @@ public class GameMaster : MonoBehaviour
     {
         Time.timeScale = 1;
     }
-    
 
-    void EndGame()
+
+    public void EndGame()
     {
+        int curr_score = (int)Mathf.Floor(attacker.stopwatch);
+
         Time.timeScale = 1;
         sound_manager.transform.parent = transform;
         cam.transform.parent = transform;
         Destroy(player.gameObject);
         Destroy(attacker.gameObject);
 
+        blue_screen.gameObject.SetActive(true);
+        blue_screen.text_box.text = $"Score: {curr_score}";
+        if (curr_score > highscore)
+        {
+            highscore = curr_score;
+        }
+    }
+
+    void BackToTitle()
+    {
+        blue_screen.gameObject.SetActive(false);
+
+        if (highscore != 0)
+        {
+            title.highscore.text = $"Highscore: {highscore}";
+        }
         title.gameObject.SetActive(true);
     }
 

@@ -49,7 +49,7 @@ public class SoundManager : MonoBehaviour
         {
             case SFX.menu_button:
                 sfx = menu_button_sfx;
-                volume_adjustment = 0.4F;
+                volume_adjustment = 0.7F;
                 break;
             case SFX.pause_button:
                 sfx = pause_sfx;

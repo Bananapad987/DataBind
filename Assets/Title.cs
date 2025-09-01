@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Title : MonoBehaviour
 {
     public UnityEngine.UI.Button start;
+    public TMP_Text highscore;
 
     public Slider sfx_slider;
     public Slider music_slider;

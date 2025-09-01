@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -29,6 +30,8 @@ public class Player : MonoBehaviour
     Coroutine is_slowed = null;
 
     DashBar dash_bar;
+
+    public UnityEvent death = new UnityEvent();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
@@ -184,7 +187,7 @@ public class Player : MonoBehaviour
 
         if (curr_health == 0)
         {
-            Died();
+            death.Invoke();
         }
 
         has_iframes = StartCoroutine(Iframes(iframe_duration));

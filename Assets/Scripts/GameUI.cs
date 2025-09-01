@@ -20,7 +20,6 @@ public class GameUI : MonoBehaviour
     public TMP_Text text_box;
     public UnityEngine.UI.Button pause;
     public UnityEngine.UI.Button unpause;
-
     public UnityEngine.UI.Button quit;
     public Slider sfx_slider;
     public Slider music_slider;
