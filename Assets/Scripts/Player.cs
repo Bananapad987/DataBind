@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    GameUI gui;
+    public GameUI gui;
     public List<Sprite> sprites;
 
     public float speed = 10;
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour
     DashBar dash_bar;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         // gui.ReloadHeartUI();
@@ -179,7 +180,7 @@ public class Player : MonoBehaviour
         StartCoroutine(HitFlash());
         gui.ChangeHealth(-1);
         curr_health--;
-        GameMaster.sound_manager.PlaySFX(SoundManager.SFX.hit, Vector3.zero);
+        GameMaster.sound_manager.PlaySFX(SoundManager.SFX.hit, transform.position);
 
         if (curr_health == 0)
         {

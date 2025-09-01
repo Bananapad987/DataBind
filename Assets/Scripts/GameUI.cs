@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using UnityEngine.Rendering;
 using TMPro;
 using System;
+using System.Threading.Tasks;
 
 public class GameUI : MonoBehaviour
 {
@@ -17,6 +18,14 @@ public class GameUI : MonoBehaviour
     int max_health = 0;
     int curr_health = 0;
     public TMP_Text text_box;
+    public UnityEngine.UI.Button pause;
+    public UnityEngine.UI.Button unpause;
+
+    public UnityEngine.UI.Button quit;
+    public Slider sfx_slider;
+    public Slider music_slider;
+
+
 
     // Heart template
     List<GameObject> hearts = new List<GameObject>();
@@ -26,6 +35,8 @@ public class GameUI : MonoBehaviour
     void Start()
     {
         SetHealth(GameMaster.player.max_health, GameMaster.player.curr_health);
+        sfx_slider.onValueChanged.AddListener(GameMaster.sound_manager.SetSFX);
+        music_slider.onValueChanged.AddListener(GameMaster.sound_manager.SetMusic);
     }
 
     public void SetHealth(int max_health_, int curr_health_)
@@ -131,5 +142,8 @@ public class GameUI : MonoBehaviour
     void Update()
     {
         text_box.text = $"{Mathf.Floor(GameMaster.attacker.stopwatch)}";
+        sfx_slider.value = GameMaster.sound_manager.sfx_volume;
+        music_slider.value = GameMaster.sound_manager.music_volume;
+
     }
 }

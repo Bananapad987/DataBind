@@ -167,6 +167,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6251920723470157544, guid: 82a42470540be0e4c9945f0e14e1a289, type: 3}
+      propertyPath: grid_prefab
+      value: 
+      objectReference: {fileID: 5725818573565501031, guid: b94ccc4f5f0c4404fb5ed6f9600b1ff6, type: 3}
     - target: {fileID: 9144587620269648110, guid: 82a42470540be0e4c9945f0e14e1a289, type: 3}
       propertyPath: m_Name
       value: GameMaster
