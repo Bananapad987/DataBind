@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Analytics;
 
 [RequireComponent(typeof(LineRenderer))]
 public class VirusBinder : MonoBehaviour
@@ -15,14 +14,15 @@ public class VirusBinder : MonoBehaviour
         black
     }
 
-    public VirusBlock target_1;
-    public VirusBlock target_2;
+    VirusBlock target_1;
+    VirusBlock target_2;
 
     public Sprite[] sprites;
-    public Color[] colors = {Color.white, Color.blue, Color.red, Color.yellow, Color.black};
+    readonly Color[] colors = { Color.white, Color.blue, Color.red, Color.yellow, Color.black };
 
-    public float initial_velocity = 10;
-    public float raycast_length = 1000;
+    readonly float initial_velocity = 5;
+    readonly float acceleration = 2f;
+    readonly float raycast_length = 500;
 
     bool binded = false;
 
@@ -50,6 +50,11 @@ public class VirusBinder : MonoBehaviour
 
         Color c = colors[(int)t];
         c.a = 0.2f;
+
+        if (t == TYPE.black)
+        {
+            c.a = 0.7f;
+        }
         line_renderer.startColor = c;
         line_renderer.endColor = c;
 
@@ -83,6 +88,7 @@ public class VirusBinder : MonoBehaviour
             else
             {
                 target_1 = target_2;
+                target_2 = null;
             }
         }
 
@@ -92,7 +98,7 @@ public class VirusBinder : MonoBehaviour
         {
             transform.position = hit.point;
             line_renderer.SetPosition(0, target_1.transform.position);
-            line_renderer.SetPosition(1, target_2.transform.position);
+            line_renderer.SetPosition(1, transform.position);
         }
     }
 
@@ -112,16 +118,51 @@ public class VirusBinder : MonoBehaviour
 
         Vector3 p_1 = target_1.transform.position;
 
-        line_renderer.SetPosition(0, target_1.transform.position);
+        line_renderer.SetPosition(0, p_1);
 
         if (target_2 != null)
         {
-            line_renderer.SetPosition(1, target_2.transform.position);   
+            line_renderer.SetPosition(1, target_2.transform.position);
+        }
+        else
+        {
+            Rebind();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (!binded)
+        {
+            return;
         }
 
-        if ((p_1 - transform.position).sqrMagnitude < 1)
+        if (target_1 == null)
         {
             Destroy(gameObject);
+            return;
+        }
+
+        float x = 1 + acceleration * Time.deltaTime;
+        Rigidbody2D r_1 = target_1.gameObject.GetComponent<Rigidbody2D>();
+
+        if (r_1.linearVelocity.magnitude < 20)
+        {
+            r_1.linearVelocity *= x;
+        }
+
+        if (target_2 != null)
+        {
+            Rigidbody2D r_2 = target_2.gameObject.GetComponent<Rigidbody2D>();
+
+            if (r_2.linearVelocity.magnitude < 20)
+            {
+                r_2.linearVelocity *= x;
+            }
+        }
+        else
+        {
+            Rebind();
         }
     }
 }

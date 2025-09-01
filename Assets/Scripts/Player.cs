@@ -118,6 +118,8 @@ public class Player : MonoBehaviour
         }
 
         hearts--;
+        GameMaster.sound_manager.PlaySFX(SoundManager.SFX.hit, Vector3.zero);
+
         if (hearts == 0)
         {
             Died();

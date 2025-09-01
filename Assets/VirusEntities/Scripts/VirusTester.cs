@@ -47,8 +47,6 @@ public class VirusTester : MonoBehaviour
             if (t_1 != null && t_2 != null)
             {
                 VirusBinder vb = Instantiate(virus_binder_prefab).GetComponent<VirusBinder>();
-                t_1.player_object = player_object;
-                t_2.player_object = player_object;
                 vb.Bind(t_1, t_2, VirusBinder.TYPE.blue);
 
                 binded.Add(t_1);
