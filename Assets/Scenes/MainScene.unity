@@ -174,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 6251920723470157544, guid: 82a42470540be0e4c9945f0e14e1a289, type: 3}
       propertyPath: blue_screen_prefab
       value: 
-      objectReference: {fileID: 2695559941198453419, guid: 2b862e531b01e6640906d4e0cf729474, type: 3}
+      objectReference: {fileID: 5280478482659862950, guid: a19529a25b06d8f4d9b6ae27775e743b, type: 3}
     - target: {fileID: 9144587620269648110, guid: 82a42470540be0e4c9945f0e14e1a289, type: 3}
       propertyPath: m_Name
       value: GameMaster

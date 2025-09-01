@@ -46,20 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virus_binder_prefab: {fileID: 6537233640961059603, guid: 558cb08459634f943bf9a15041fcebd3, type: 3}
   virus_block_prefab: {fileID: 4142441692357623697, guid: f8caea6be3fb14f49a7f940f38a5896f, type: 3}
-  player_object: {fileID: 0}
   attack_cooldown: 3
-  attack_timer: 0
-  burst_time: 0.25
-  bind_time: 0.25
   bursts: 1
-  burst_spacing: 0.2
-  burst_increase_interval: 30
-  attack_cooldown_decrease_interval: 2
-  attack_cooldown_decrease_amount: 0.5
-  inner_radius: 5
+  inner_radius: 7
   outer_radius: 15
-  difficulty_timer: 0
-  burst_increase_count: 0
   stopwatch: 0
   weights: 03000000000000000000000000000000
-  black_block_level: 10
+  level: 0

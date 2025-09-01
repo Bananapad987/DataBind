@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
                     StopCoroutine(has_iframes);
                 }
 
-                has_iframes = StartCoroutine(Iframes(dash_duration));
+                has_iframes = StartCoroutine(Iframes(dash_duration + 0.3F));
             }
         }
 
@@ -106,7 +106,14 @@ public class Player : MonoBehaviour
         DashHandler();
         SpriteHandler();
 
-        gameObject.GetComponent<Collider2D>().enabled = has_iframes == null;
+        if (has_iframes != null)
+        {
+            gameObject.GetComponent<Collider2D>().excludeLayers |= 1 << 6;
+        }
+        else
+        {
+            gameObject.GetComponent<Collider2D>().excludeLayers &= ~(1 << 6);
+        }
     }
 
     IEnumerator Dash()

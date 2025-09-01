@@ -62,12 +62,12 @@ public class VirusBlock : MonoBehaviour
             switch (type)
             {
                 case VirusBinder.TYPE.red:
-                    GameObject vf_object = Instantiate(virus_field_prefab.gameObject);
+                    GameObject vf_object = Instantiate(virus_field_prefab.gameObject, transform.parent);
                     vf_object.transform.position = transform.position;
                     vf_object.GetComponent<VirusField>().duration = field_duration;
                     break;
                 case VirusBinder.TYPE.yellow:
-                    GameObject vp_object = Instantiate(virus_projectile_prefab);
+                    GameObject vp_object = Instantiate(virus_projectile_prefab, transform.parent);
                     vp_object.transform.position = transform.position;
                     vp_object.GetComponent<Rigidbody2D>().linearVelocity = (GameMaster.player.gameObject.transform.position - transform.position).normalized * projectile_speed;
                     break;
@@ -82,7 +82,7 @@ public class VirusBlock : MonoBehaviour
     IEnumerator Death()
     {
         ParticleSystem particles = gameObject.GetComponentInChildren<ParticleSystem>();
-        particles.gameObject.transform.parent = null;
+        particles.gameObject.transform.parent = transform.parent;
         particles.Play();
         death.Invoke(this);
 

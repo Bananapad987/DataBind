@@ -55,6 +55,9 @@ public class GameMaster : MonoBehaviour
         cam.transform.parent = player.transform;
         cam.transform.position = Vector2.zero;
         sound_manager.transform.parent = player.transform;
+        sound_manager.transform.position = Vector2.zero;
+
+
         attacker = Instantiate(attacker_prefab).GetComponent<Attacker>();
 
         player.gui.quit.onClick.AddListener(EndGame);
@@ -81,7 +84,9 @@ public class GameMaster : MonoBehaviour
 
         Time.timeScale = 1;
         sound_manager.transform.parent = transform;
+        sound_manager.transform.position = Vector2.zero;
         cam.transform.parent = transform;
+        cam.transform.position = Vector2.zero;
         Destroy(player.gameObject);
         Destroy(attacker.gameObject);
 

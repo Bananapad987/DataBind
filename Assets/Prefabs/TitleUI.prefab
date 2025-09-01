@@ -236,7 +236,7 @@ MonoBehaviour:
     https://www.youtube.com/watch?v=JLQKDiQBk14'
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
-  m_ReadOnly: 0
+  m_ReadOnly: 1
   m_RichText: 1
   m_GlobalFontAsset: {fileID: 0}
   m_OnFocusSelectAll: 1
