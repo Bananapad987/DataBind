@@ -27,7 +27,7 @@ public class Title : MonoBehaviour
         GameMaster.sound_manager.PlaySFX(SoundManager.SFX.menu_button, Vector3.zero);
     }
 
-    public void Quit()
+    public void Quit() 
     {
         Debug.Log("APP QUIT");
         Application.Quit();

@@ -14,6 +14,8 @@ public class GameMaster : MonoBehaviour
     public GameObject player_prefab;
     public static Player player;
 
+    public GameObject grid_prefab;
+    public static GameObject grid_obj;
     public static Camera cam;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,6 +31,7 @@ public class GameMaster : MonoBehaviour
 
     void StartGame()
     {
+        grid_obj = Instantiate(grid_prefab);
         title.gameObject.SetActive(false);
         player = Instantiate(player_prefab).GetComponent<Player>();
         player.Start();

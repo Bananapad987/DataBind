@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb56506b42bbc24693e4597ee894059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gui: {fileID: 0}
+  gui: {fileID: 2320462593755237521, guid: 8342a7ed2bd036541b1e1c514cc1c417, type: 3}
   sprites:
   - {fileID: 21300000, guid: 5ef0d7a3de70bbd4a8e35c7e9e3f79b3, type: 3}
   - {fileID: 21300000, guid: 5b214a711c22af9409e55efb725bb7d7, type: 3}
