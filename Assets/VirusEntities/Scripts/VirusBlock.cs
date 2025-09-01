@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,7 +8,7 @@ public class VirusBlock : MonoBehaviour
 {
     public GameObject virus_field_prefab;
     public GameObject virus_projectile_prefab;
-    public UnityEvent death = new();
+    public UnityEvent<VirusBlock> death = new();
 
     public VirusBinder.TYPE type = VirusBinder.TYPE.white;
     //red
@@ -22,14 +23,10 @@ public class VirusBlock : MonoBehaviour
 
     bool outside_wall = true;
 
-    void Awake()
-    {
-        
-    }
-
     void Update()
     {
-        if (type == VirusBinder.TYPE.black) {
+        if (type == VirusBinder.TYPE.black)
+        {
             gameObject.GetComponent<Collider2D>().excludeLayers |= 1 << 6;
         }
 
@@ -79,7 +76,21 @@ public class VirusBlock : MonoBehaviour
             GameMaster.sound_manager.PlaySFX(SoundManager.SFX.block_break, transform.position);
         }
 
-        death.Invoke();
+        StartCoroutine(Death());
+    }
+
+    IEnumerator Death()
+    {
+        ParticleSystem particles = gameObject.GetComponentInChildren<ParticleSystem>();
+        particles.gameObject.transform.parent = null;
+        particles.Play();
+        death.Invoke(this);
+
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+
+        yield return new WaitForSeconds(particles.main.startLifetime.constantMax + particles.main.duration);
+        Destroy(particles.gameObject);
         Destroy(gameObject);
     }
 }
