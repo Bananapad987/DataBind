@@ -19,9 +19,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip block_break_sfx;
     public AudioClip hit_sfx;
 
-    public float global_volume = 0.5f;
-    public float music_volume = 1;
-    public float sfx_volume = 1;
+    public float global_volume;
+    public float music_volume;
+    public float sfx_volume;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

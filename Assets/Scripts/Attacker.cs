@@ -45,8 +45,8 @@ public class Attacker : MonoBehaviour
     /// <summary>
     /// Blocks will spawn between the inner and outer radius centered at the player
     /// </summary>
-    readonly float inner_radius = 10;
-    readonly float outer_radius = 30;
+    public float inner_radius = 7;
+    public float outer_radius = 20;
 
     /// <summary>
     /// Keeps track of when to increase the difficulty
@@ -99,7 +99,7 @@ public class Attacker : MonoBehaviour
 
     VirusBinder.TYPE GenerateType()
     {
-        int total = weights.Sum(); 
+        int total = weights.Sum();
 
         int temp = Random.Range(0, total) + 1;
 
@@ -178,5 +178,13 @@ public class Attacker : MonoBehaviour
         {
             attacking = StartCoroutine(Attack());
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(GameMaster.player.transform.position, inner_radius);
+        Gizmos.DrawWireSphere(GameMaster.player.transform.position, outer_radius);
+
     }
 }

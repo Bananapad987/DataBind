@@ -105,6 +105,8 @@ public class Player : MonoBehaviour
     {
         DashHandler();
         SpriteHandler();
+
+        gameObject.GetComponent<Collider2D>().enabled = has_iframes == null;
     }
 
     IEnumerator Dash()
@@ -123,11 +125,7 @@ public class Player : MonoBehaviour
 
     public void Slow(float slow_percentage, float slow_duration)
     {
-        if (is_slowed != null)
-        {
-            StopCoroutine(is_slowed);
-        }
-        else
+        if (is_slowed == null)
         {
             is_slowed = StartCoroutine(Slowed(slow_percentage, slow_duration));
         }
@@ -175,11 +173,6 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (has_iframes != null)
-        {
-            return;
-        }
-
         StartCoroutine(HitFlash());
         gui.ChangeHealth(-1);
         curr_health--;

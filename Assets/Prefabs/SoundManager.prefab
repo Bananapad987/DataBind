@@ -51,8 +51,8 @@ MonoBehaviour:
   block_break_sfx: {fileID: 8300000, guid: 1775aa3aef02d6a4387203f974a638cb, type: 3}
   hit_sfx: {fileID: 8300000, guid: 496c74fce71d9fc43aaeb7537a1e698e, type: 3}
   global_volume: 0.5
-  music_volume: 1
-  sfx_volume: 1
+  music_volume: 0.5
+  sfx_volume: 0.75
 --- !u!82 &7934615702043958098
 AudioSource:
   m_ObjectHideFlags: 0
