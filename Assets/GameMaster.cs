@@ -11,6 +11,9 @@ public class GameMaster : MonoBehaviour
     public GameObject player_prefab;
     public static Player player;
 
+    public GameObject grid_prefab;
+    public static GameObject grid_obj;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +23,7 @@ public class GameMaster : MonoBehaviour
 
     void StartGame()
     {
+        grid_obj = Instantiate(grid_prefab);
         player = Instantiate(player_prefab).GetComponent<Player>();
         attacker = Instantiate(attacker_prefab).GetComponent<Attacker>();
     }

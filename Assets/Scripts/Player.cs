@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class Player : MonoBehaviour
 {
     GameUI gui;
@@ -47,10 +48,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Update()
+    void DashHandler()
     {
         if (can_dash && InputSystem.actions.FindAction("Dash").WasPressedThisFrame())
-        {
+            {
             Debug.Log("Dash");
             if (direction != Vector2.zero) // Use dash
             {
@@ -68,7 +69,6 @@ public class Player : MonoBehaviour
         {
             if (dash_cooldown >= 0)
             {
-                // Debug.Log($"{dash_cooldown}, {curr_dash}");
                 dash_bar.frac = dash_cooldown / max_dash_cooldown;
                 dash_cooldown -= Time.deltaTime;
             }
@@ -78,6 +78,29 @@ public class Player : MonoBehaviour
                 can_dash = true;
             }
         }
+    }
+
+    void SpriteHandler()
+    {
+        int value = 0;
+
+        if (is_slowed != null)
+        {
+            value += 1;
+        }
+
+        if (!can_dash)
+        {
+            value += 2;
+        }
+
+        GetComponent<SpriteRenderer>().sprite = sprites[value];
+    }
+
+    void Update()
+    {
+        DashHandler();
+        SpriteHandler();
     }
 
     IEnumerator Dash()

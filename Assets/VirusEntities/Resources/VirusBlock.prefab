@@ -181,8 +181,3 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   type: 0
-  field_duration: 5
-  projectile_speed: 5
-  player_object: {fileID: 0}
-  slow_percentage: 0.5
-  slow_duration: 3
