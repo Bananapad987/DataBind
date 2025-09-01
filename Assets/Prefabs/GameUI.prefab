@@ -56,7 +56,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 200, y: 200}
+  m_CellSize: {x: 150, y: 150}
   m_Spacing: {x: 40, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006438c1833923d4ba4459872c907783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  full_heart: {fileID: -8886713217412807493, guid: 06f3912ade2060f4b83dc0040c36a207, type: 3}
-  empty_heart: {fileID: -8886713217412807493, guid: 215b93bc019eab54da7245c3941c8be4, type: 3}
+  full_heart: {fileID: 21300000, guid: 06f3912ade2060f4b83dc0040c36a207, type: 3}
+  empty_heart: {fileID: 21300000, guid: 215b93bc019eab54da7245c3941c8be4, type: 3}
   heart_grid: {fileID: 1200874415430919405}
+  player: {fileID: 0}

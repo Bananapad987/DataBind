@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 10;
+    public GameUI gui;
 
-    int max_health = 5;
-    int hearts;
+    public float speed = 10;
+    public int max_health = 5;
+    public int curr_health = 5;
 
     public Vector2 direction = Vector2.zero;
     Rigidbody2D rb;
@@ -15,21 +16,22 @@ public class Player : MonoBehaviour
     public float dash_velocity = 60F;
     public float dash_duration = 0.07F;
 
-    float max_dash_cooldown = 3;
-    float dash_cooldown = 0;
-    bool can_dash = true;
+    public float max_dash_cooldown = 3;
+    public float dash_cooldown = 0;
+    public bool can_dash = true;
     Coroutine curr_dash = null;
-
     Coroutine has_iframes = null;
     float iframe_duration = 1;
-
     Coroutine is_slowed = null;
+
+    DashBar dash_bar;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        hearts = max_health;
+        // gui.ReloadHeartUI();
+        dash_bar = GetComponentInChildren<DashBar>();
     }
 
     void FixedUpdate()
@@ -46,7 +48,7 @@ public class Player : MonoBehaviour
         if (can_dash && InputSystem.actions.FindAction("Dash").WasPressedThisFrame())
         {
             Debug.Log("Dash");
-            if (direction != Vector2.zero)
+            if (direction != Vector2.zero) // Use dash
             {
                 curr_dash = StartCoroutine("Dash");
                 if (has_iframes != null)
@@ -57,16 +59,18 @@ public class Player : MonoBehaviour
                 has_iframes = StartCoroutine(Iframes(dash_duration));
             }
         }
-        
+
         if (!can_dash && curr_dash == null)
         {
             if (dash_cooldown >= 0)
             {
-                Debug.Log($"{dash_cooldown}, {curr_dash}");
+                // Debug.Log($"{dash_cooldown}, {curr_dash}");
+                dash_bar.frac = dash_cooldown / max_dash_cooldown;
                 dash_cooldown -= Time.deltaTime;
             }
             else
             {
+                dash_bar.SetVisible(false);
                 can_dash = true;
             }
         }
@@ -74,16 +78,22 @@ public class Player : MonoBehaviour
 
     IEnumerator Dash()
     {
+        TakeDamage();
+
         can_dash = false;
         rb.linearVelocity = direction * dash_velocity;
         yield return new WaitForSeconds(dash_duration);
 
         dash_cooldown = max_dash_cooldown;
+        dash_bar.frac = dash_cooldown / max_dash_cooldown;
+        dash_bar.SetVisible(true);
+
         rb.linearVelocity = Vector2.zero;
         curr_dash = null;
     }
 
-    public void Slow(float slow_percentage, float slow_duration) {
+    public void Slow(float slow_percentage, float slow_duration)
+    {
         if (is_slowed != null)
         {
             StopCoroutine(is_slowed);
@@ -110,6 +120,30 @@ public class Player : MonoBehaviour
         has_iframes = null;
     }
 
+    public IEnumerator HitFlash()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.material.SetFloat("_IsFlash", 1);
+        yield return new WaitForSeconds(.25F);
+        sr.material.SetFloat("_IsFlash", 0);
+
+        float duration_left = iframe_duration;
+        float flash_interval = .1F;
+        while (duration_left >= 2 * flash_interval)
+        {
+            Debug.Log("HITFLASH");
+
+            yield return new WaitForSeconds(flash_interval);
+            sr.enabled = false;
+
+            yield return new WaitForSeconds(flash_interval);
+            sr.enabled = true;
+
+            duration_left -= 2*flash_interval;
+        }
+
+    }
+
     public void TakeDamage()
     {
         if (has_iframes != null)
@@ -117,8 +151,10 @@ public class Player : MonoBehaviour
             return;
         }
 
-        hearts--;
-        if (hearts == 0)
+        StartCoroutine(HitFlash());
+        gui.ChangeHealth(-1);
+        curr_health--;
+        if (curr_health == 0)
         {
             Died();
         }
@@ -128,9 +164,9 @@ public class Player : MonoBehaviour
 
     void Heal()
     {
-        if (hearts != max_health)
+        if (curr_health != max_health)
         {
-            hearts++;
+            curr_health++;
         }
     }
 
@@ -139,4 +175,6 @@ public class Player : MonoBehaviour
         //Do something here
         return;
     }
+    
+
 }

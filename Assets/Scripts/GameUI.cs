@@ -12,8 +12,10 @@ public class GameUI : MonoBehaviour
     public Sprite empty_heart;
     public GameObject heart_grid;
 
-    float max_health = 0;
-    float curr_health = 0;
+    int max_health = 0;
+    int curr_health = 0;
+
+    public Player player;
 
     // Heart template
     List<GameObject> hearts = new List<GameObject>();
@@ -22,32 +24,10 @@ public class GameUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // SetHealth(10, 5);
+        SetHealth(player.max_health, player.curr_health);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // DEBUG
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            IncreaseMaxHealth();
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            DecreaseMaxHealth();
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            ChangeHealth(1);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ChangeHealth(-1);
-        }   
-    }
-
-    public void SetHealth(float max_health_, float curr_health_)
+    public void SetHealth(int max_health_, int curr_health_)
     {
         if (max_health > max_health_)
         {
@@ -66,7 +46,7 @@ public class GameUI : MonoBehaviour
     /// Changes the current health by the amount specified (positive is healing, negative is damage)
     /// </summary>
     /// <param name="amount"></param>
-    public void ChangeHealth(float amount)
+    public void ChangeHealth(int amount)
     {
         curr_health += amount;
 
@@ -81,7 +61,7 @@ public class GameUI : MonoBehaviour
     /// Removes a heart (removes empty ones first)
     /// </summary>
     /// <param name="amount"></param>
-    public void DecreaseMaxHealth(float amount = 1)
+    public void DecreaseMaxHealth(int amount = 1)
     {
         // Lock max at 0
         if (max_health > amount)
@@ -112,7 +92,7 @@ public class GameUI : MonoBehaviour
     /// Adds to max health. Also increases current health by "amount"
     /// </summary>
     /// <param name="amount"></param>
-    public void IncreaseMaxHealth(float amount = 1)
+    public void IncreaseMaxHealth(int amount = 1)
     {
         max_health += amount;
         curr_health += amount;
