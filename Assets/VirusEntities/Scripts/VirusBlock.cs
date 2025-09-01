@@ -22,6 +22,11 @@ public class VirusBlock : MonoBehaviour
 
     bool outside_wall = true;
 
+    void Awake()
+    {
+        
+    }
+
     void Update()
     {
         if (type == VirusBinder.TYPE.black) {

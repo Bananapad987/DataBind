@@ -45,6 +45,7 @@ public class VirusBinder : MonoBehaviour
 
         target_1.GetComponent<SpriteRenderer>().sprite = sprites[(int)t];
         target_2.GetComponent<SpriteRenderer>().sprite = sprites[(int)t];
+        
 
         line_renderer = gameObject.GetComponent<LineRenderer>();
 
