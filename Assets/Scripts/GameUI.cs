@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using UnityEngine;
 using Unity.Mathematics;
 using UnityEngine.Rendering;
+using TMPro;
+using System;
+using System.Threading.Tasks;
 
 public class GameUI : MonoBehaviour
 {
@@ -12,8 +15,16 @@ public class GameUI : MonoBehaviour
     public Sprite empty_heart;
     public GameObject heart_grid;
 
-    float max_health = 0;
-    float curr_health = 0;
+    int max_health = 0;
+    int curr_health = 0;
+    public TMP_Text text_box;
+    public UnityEngine.UI.Button pause;
+    public UnityEngine.UI.Button unpause;
+    public UnityEngine.UI.Button quit;
+    public Slider sfx_slider;
+    public Slider music_slider;
+
+
 
     // Heart template
     List<GameObject> hearts = new List<GameObject>();
@@ -22,32 +33,12 @@ public class GameUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // SetHealth(10, 5);
+        SetHealth(GameMaster.player.max_health, GameMaster.player.curr_health);
+        sfx_slider.onValueChanged.AddListener(GameMaster.sound_manager.SetSFX);
+        music_slider.onValueChanged.AddListener(GameMaster.sound_manager.SetMusic);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // DEBUG
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            IncreaseMaxHealth();
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            DecreaseMaxHealth();
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            ChangeHealth(1);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ChangeHealth(-1);
-        }   
-    }
-
-    public void SetHealth(float max_health_, float curr_health_)
+    public void SetHealth(int max_health_, int curr_health_)
     {
         if (max_health > max_health_)
         {
@@ -66,7 +57,7 @@ public class GameUI : MonoBehaviour
     /// Changes the current health by the amount specified (positive is healing, negative is damage)
     /// </summary>
     /// <param name="amount"></param>
-    public void ChangeHealth(float amount)
+    public void ChangeHealth(int amount)
     {
         curr_health += amount;
 
@@ -81,7 +72,7 @@ public class GameUI : MonoBehaviour
     /// Removes a heart (removes empty ones first)
     /// </summary>
     /// <param name="amount"></param>
-    public void DecreaseMaxHealth(float amount = 1)
+    public void DecreaseMaxHealth(int amount = 1)
     {
         // Lock max at 0
         if (max_health > amount)
@@ -112,7 +103,7 @@ public class GameUI : MonoBehaviour
     /// Adds to max health. Also increases current health by "amount"
     /// </summary>
     /// <param name="amount"></param>
-    public void IncreaseMaxHealth(float amount = 1)
+    public void IncreaseMaxHealth(int amount = 1)
     {
         max_health += amount;
         curr_health += amount;
@@ -145,5 +136,13 @@ public class GameUI : MonoBehaviour
                 img.sprite = full_heart;
             }
         }
+    }
+
+    void Update()
+    {
+        text_box.text = $"{Mathf.Floor(GameMaster.attacker.stopwatch)}";
+        sfx_slider.value = GameMaster.sound_manager.sfx_volume;
+        music_slider.value = GameMaster.sound_manager.music_volume;
+
     }
 }

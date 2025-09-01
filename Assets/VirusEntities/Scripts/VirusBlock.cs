@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,62 +6,91 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody2D))]
 public class VirusBlock : MonoBehaviour
 {
-    SpriteRenderer sprite_renderer;
     public GameObject virus_field_prefab;
     public GameObject virus_projectile_prefab;
+    public UnityEvent<VirusBlock> death = new();
 
-    public UnityEvent death;
-
-
+    public VirusBinder.TYPE type = VirusBinder.TYPE.white;
     //red
-    public float field_duration = 5f;
+    readonly float field_duration = 5f;
 
     //yellow
-    public float projectile_speed = 3f;
-    public GameObject player_object;
+    float projectile_speed = 7;
 
     //blue
-    public float slow_percentage = 0.5f;
-    public float slow_duration = 3;
+    readonly float slow_percentage = 0.5f;
+    readonly float slow_duration = 3;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    bool outside_wall = true;
+
+    void Update()
     {
-        sprite_renderer = GetComponent<SpriteRenderer>();
+        if (type == VirusBinder.TYPE.black)
+        {
+            gameObject.GetComponent<Collider2D>().excludeLayers |= 1 << 6;
+        }
+
+        if (outside_wall && Mathf.Abs(transform.position.x) < 13 && Mathf.Abs(transform.position.y) < 8)
+        {
+            outside_wall = false;
+        }
+
+        if (outside_wall)
+        {
+            gameObject.GetComponent<Collider2D>().excludeLayers |= 1 << 7;
+        }
+        else
+        {
+            gameObject.GetComponent<Collider2D>().excludeLayers &= ~(1 << 7);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Color c = sprite_renderer.color;
 
         if (collision.gameObject.TryGetComponent<Player>(out var p))
         {
-            if (c == Color.blue)
+            if (type == VirusBinder.TYPE.blue)
             {
                 p.Slow(slow_percentage, slow_duration);
             }
-            else
-            {
-                p.TakeDamage();
-            }
+
+            p.TakeDamage();
         }
         else
         {
-            if (c == Color.red)
+            switch (type)
             {
-                GameObject vf_object = Instantiate(virus_field_prefab.gameObject);
-                vf_object.transform.position = transform.position;
-                vf_object.GetComponent<VirusField>().duration = field_duration;
+                case VirusBinder.TYPE.red:
+                    GameObject vf_object = Instantiate(virus_field_prefab.gameObject, transform.parent);
+                    vf_object.transform.position = transform.position;
+                    vf_object.GetComponent<VirusField>().duration = field_duration;
+                    break;
+                case VirusBinder.TYPE.yellow:
+                    GameObject vp_object = Instantiate(virus_projectile_prefab, transform.parent);
+                    vp_object.transform.position = transform.position;
+                    vp_object.GetComponent<Rigidbody2D>().linearVelocity = (GameMaster.player.gameObject.transform.position - transform.position).normalized * projectile_speed;
+                    break;
             }
-            else if (c == Color.yellow)
-            {
-                GameObject vp_object = Instantiate(virus_projectile_prefab);
-                vp_object.transform.position = transform.position;
-                vp_object.GetComponent<Rigidbody2D>().linearVelocity = (player_object.transform.position - transform.position).normalized * projectile_speed;
-            }
+
+            GameMaster.sound_manager.PlaySFX(SoundManager.SFX.block_break, transform.position);
         }
 
-        death.Invoke();
+        StartCoroutine(Death());
+    }
+
+    IEnumerator Death()
+    {
+        ParticleSystem particles = gameObject.GetComponentInChildren<ParticleSystem>();
+        particles.gameObject.transform.parent = transform.parent;
+        particles.Play();
+        death.Invoke(this);
+
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+
+        yield return new WaitForSeconds(particles.main.startLifetime.constantMax + particles.main.duration);
+        Destroy(particles.gameObject);
         Destroy(gameObject);
     }
 }

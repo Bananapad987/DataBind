@@ -14,10 +14,10 @@ public class VirusField : MonoBehaviour
         }
     }
     
-    public IEnumerator Activate(float duration)
+    public IEnumerator Activate(float d)
     {
         gameObject.GetComponent<Collider2D>().enabled = true;
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(d);
         Destroy(gameObject);
     }
 

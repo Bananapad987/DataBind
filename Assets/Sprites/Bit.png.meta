@@ -1,7 +1,10 @@
 fileFormatVersion: 2
-guid: 78dc72cb1b29be84d8ebc99b6cb9ac42
+guid: 5ef0d7a3de70bbd4a8e35c7e9e3f79b3
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7901366018410756985
+    second: Databind3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -43,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -53,7 +56,7 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -105,7 +108,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -118,12 +121,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    outline: []
+    outline:
+    - - {x: 11, y: -11}
+      - {x: 11, y: 10}
+      - {x: 9, y: 12}
+      - {x: -6, y: 12}
+      - {x: -11, y: 7}
+      - {x: -11, y: -11}
+      - {x: -9, y: -13}
+      - {x: 9, y: -13}
     customData: 
-    physicsShape: []
+    physicsShape:
+    - - {x: 9, y: -10}
+      - {x: 9, y: 9}
+      - {x: 8, y: 10}
+      - {x: -5, y: 10}
+      - {x: -9, y: 6}
+      - {x: -9, y: -10}
+      - {x: -8, y: -11}
+      - {x: 8, y: -11}
     bones: []
-    spriteID: 0b7c3e9a5c641e54e93ab4ffab5c3cf7
-    internalID: 0
+    spriteID: bc80065511be5ec439b6e64d400f2da2
+    internalID: -1554315179
     vertices: []
     indices: 
     edges: []

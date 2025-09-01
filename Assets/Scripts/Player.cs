@@ -1,13 +1,19 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    public float speed = 10;
+    public GameUI gui;
+    public List<Sprite> sprites;
 
-    int max_health = 5;
-    int hearts;
+    public float speed = 10;
+    public int max_health = 5;
+    public int curr_health = 5;
 
     public Vector2 direction = Vector2.zero;
     Rigidbody2D rb;
@@ -15,21 +21,26 @@ public class Player : MonoBehaviour
     public float dash_velocity = 60F;
     public float dash_duration = 0.07F;
 
-    float max_dash_cooldown = 3;
-    float dash_cooldown = 0;
-    bool can_dash = true;
+    public float max_dash_cooldown = 3;
+    public float dash_cooldown = 0;
+    public bool can_dash = true;
     Coroutine curr_dash = null;
-
     Coroutine has_iframes = null;
     float iframe_duration = 1;
-
     Coroutine is_slowed = null;
 
+    DashBar dash_bar;
+
+    public UnityEvent death = new UnityEvent();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        hearts = max_health;
+        // gui.ReloadHeartUI();
+        dash_bar = GetComponentInChildren<DashBar>();
+
+        gui = GetComponentInChildren<GameUI>();
     }
 
     void FixedUpdate()
@@ -41,12 +52,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Update()
+    void DashHandler()
     {
         if (can_dash && InputSystem.actions.FindAction("Dash").WasPressedThisFrame())
-        {
+            {
             Debug.Log("Dash");
-            if (direction != Vector2.zero)
+            if (direction != Vector2.zero) // Use dash
             {
                 curr_dash = StartCoroutine("Dash");
                 if (has_iframes != null)
@@ -54,21 +65,54 @@ public class Player : MonoBehaviour
                     StopCoroutine(has_iframes);
                 }
 
-                has_iframes = StartCoroutine(Iframes(dash_duration));
+                has_iframes = StartCoroutine(Iframes(dash_duration + 0.3F));
             }
         }
-        
+
         if (!can_dash && curr_dash == null)
         {
             if (dash_cooldown >= 0)
             {
-                Debug.Log($"{dash_cooldown}, {curr_dash}");
+                dash_bar.frac = dash_cooldown / max_dash_cooldown;
                 dash_cooldown -= Time.deltaTime;
             }
             else
             {
+                dash_bar.SetVisible(false);
                 can_dash = true;
             }
+        }
+    }
+
+    void SpriteHandler()
+    {
+        int value = 0;
+
+        if (is_slowed != null)
+        {
+            value += 1;
+        }
+
+        if (!can_dash)
+        {
+            value += 2;
+        }
+
+        GetComponent<SpriteRenderer>().sprite = sprites[value];
+    }
+
+    void Update()
+    {
+        DashHandler();
+        SpriteHandler();
+
+        if (has_iframes != null)
+        {
+            gameObject.GetComponent<Collider2D>().excludeLayers |= 1 << 6;
+        }
+        else
+        {
+            gameObject.GetComponent<Collider2D>().excludeLayers &= ~(1 << 6);
         }
     }
 
@@ -79,16 +123,16 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dash_duration);
 
         dash_cooldown = max_dash_cooldown;
+        dash_bar.frac = dash_cooldown / max_dash_cooldown;
+        dash_bar.SetVisible(true);
+
         rb.linearVelocity = Vector2.zero;
         curr_dash = null;
     }
 
-    public void Slow(float slow_percentage, float slow_duration) {
-        if (is_slowed != null)
-        {
-            StopCoroutine(is_slowed);
-        }
-        else
+    public void Slow(float slow_percentage, float slow_duration)
+    {
+        if (is_slowed == null)
         {
             is_slowed = StartCoroutine(Slowed(slow_percentage, slow_duration));
         }
@@ -110,17 +154,40 @@ public class Player : MonoBehaviour
         has_iframes = null;
     }
 
-    public void TakeDamage()
+    public IEnumerator HitFlash()
     {
-        if (has_iframes != null)
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.material.SetFloat("_IsFlash", 1);
+        yield return new WaitForSeconds(.25F);
+        sr.material.SetFloat("_IsFlash", 0);
+
+        float duration_left = iframe_duration;
+        float flash_interval = .1F;
+        while (duration_left >= 2 * flash_interval)
         {
-            return;
+            Debug.Log("HITFLASH");
+
+            yield return new WaitForSeconds(flash_interval);
+            sr.enabled = false;
+
+            yield return new WaitForSeconds(flash_interval);
+            sr.enabled = true;
+
+            duration_left -= 2*flash_interval;
         }
 
-        hearts--;
-        if (hearts == 0)
+    }
+
+    public void TakeDamage()
+    {
+        StartCoroutine(HitFlash());
+        gui.ChangeHealth(-1);
+        curr_health--;
+        GameMaster.sound_manager.PlaySFX(SoundManager.SFX.hit, transform.position);
+
+        if (curr_health == 0)
         {
-            Died();
+            death.Invoke();
         }
 
         has_iframes = StartCoroutine(Iframes(iframe_duration));
@@ -128,9 +195,9 @@ public class Player : MonoBehaviour
 
     void Heal()
     {
-        if (hearts != max_health)
+        if (curr_health != max_health)
         {
-            hearts++;
+            curr_health++;
         }
     }
 
@@ -139,4 +206,6 @@ public class Player : MonoBehaviour
         //Do something here
         return;
     }
+    
+
 }
