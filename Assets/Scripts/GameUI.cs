@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using UnityEngine;
 using Unity.Mathematics;
 using UnityEngine.Rendering;
+using TMPro;
+using System;
 
 public class GameUI : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class GameUI : MonoBehaviour
     int curr_health = 0;
 
     public Player player;
+    public Attacker attacker;
+    public TMP_Text text_box;
 
     // Heart template
     List<GameObject> hearts = new List<GameObject>();
@@ -125,5 +129,10 @@ public class GameUI : MonoBehaviour
                 img.sprite = full_heart;
             }
         }
+    }
+
+    void Update()
+    {
+        text_box.text = $"{Mathf.Floor(attacker.stopwatch)}";
     }
 }

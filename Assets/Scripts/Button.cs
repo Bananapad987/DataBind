@@ -5,12 +5,13 @@ using UnityEngine.UI;
 public class Button : MonoBehaviour
 {
 
-    // UnityEngine.UI.Button b;
+    UnityEngine.UI.Button b;
     // // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // void Start()
-    // {
-    //     b = GetComponent<UnityEngine.UI.Button>();
-    // }
+    void Start()
+    {
+        b = GetComponent<UnityEngine.UI.Button>();
+        b.onClick.AddListener(Notify);
+    }
 
     // // Update is called once per frame
     // void Update()

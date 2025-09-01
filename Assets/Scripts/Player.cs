@@ -78,8 +78,6 @@ public class Player : MonoBehaviour
 
     IEnumerator Dash()
     {
-        TakeDamage();
-
         can_dash = false;
         rb.linearVelocity = direction * dash_velocity;
         yield return new WaitForSeconds(dash_duration);
