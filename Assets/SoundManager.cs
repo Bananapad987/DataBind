@@ -34,11 +34,13 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFX(SFX s, Vector3 pos)
     {
+        float volume_adjustment = 1;
         AudioClip sfx = open_game_sfx;
         switch (s)
         {
             case SFX.menu_button:
                 sfx = menu_button_sfx;
+                volume_adjustment = 0.6F;
                 break;
             case SFX.pause_button:
                 sfx = pause_sfx;
@@ -57,7 +59,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            AudioSource.PlayClipAtPoint(sfx, pos, global_volume * sfx_volume);   
+            AudioSource.PlayClipAtPoint(sfx, pos, global_volume * sfx_volume * volume_adjustment);   
         }
     }
 
