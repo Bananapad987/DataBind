@@ -5,7 +5,6 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     AudioSource music;
-
     public enum SFX {
         open_game,
         menu_button,
@@ -28,10 +27,20 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         music = gameObject.GetComponent<AudioSource>();
-        music.volume = global_volume * music_volume;
+        music.volume = global_volume;
         PlaySFX(SFX.open_game, Vector3.zero);
     }
 
+    public void SetSFX(float newValue)
+    {
+        sfx_volume = newValue;
+    }
+    public void SetMusic(float newValue)
+    {
+        music_volume = newValue;
+        music.volume = global_volume * music_volume;
+
+    }
     public void PlaySFX(SFX s, Vector3 pos)
     {
         float volume_adjustment = 1;
@@ -40,7 +49,7 @@ public class SoundManager : MonoBehaviour
         {
             case SFX.menu_button:
                 sfx = menu_button_sfx;
-                volume_adjustment = 0.6F;
+                volume_adjustment = 0.4F;
                 break;
             case SFX.pause_button:
                 sfx = pause_sfx;
@@ -59,7 +68,8 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            AudioSource.PlayClipAtPoint(sfx, pos, global_volume * sfx_volume * volume_adjustment);   
+            pos = transform.position;
+            AudioSource.PlayClipAtPoint(sfx, pos, global_volume * sfx_volume * volume_adjustment);
         }
     }
 

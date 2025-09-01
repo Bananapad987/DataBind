@@ -23,30 +23,56 @@ public class GameMaster : MonoBehaviour
         title = Instantiate(title_prefab).GetComponent<Title>();
         title.start.onClick.AddListener(StartGame);
         cam = GetComponentInChildren<Camera>();
+
+        
     }
 
     void StartGame()
     {
         title.gameObject.SetActive(false);
         player = Instantiate(player_prefab).GetComponent<Player>();
+        player.Start();
+
         cam.transform.parent = player.transform;
+        sound_manager.transform.parent = player.transform;
         attacker = Instantiate(attacker_prefab).GetComponent<Attacker>();
+
+        player.gui.quit.onClick.AddListener(EndGame);
+        player.gui.pause.onClick.AddListener(PauseGame);
+        player.gui.unpause.onClick.AddListener(UnpauseGame);
+
+        
     }
+
+    void PauseGame()
+    {
+        sound_manager.PlaySFX(SoundManager.SFX.pause_button, Vector3.zero);
+        Time.timeScale = 0;
+    }
+
+    void UnpauseGame()
+    {
+        Time.timeScale = 1;
+    }
+    
 
     void EndGame()
     {
-        sound_manager.transform.position = Vector3.zero;
+        Time.timeScale = 1;
+        sound_manager.transform.parent = transform;
         cam.transform.parent = transform;
         Destroy(player.gameObject);
         Destroy(attacker.gameObject);
+
+        title.gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (player != null)
-        {
-            sound_manager.transform.position = player.transform.position;
-        }
-    }
+    // // Update is called once per frame
+    // void Update()
+    // {
+    //     if (player != null)
+    //     {
+    //         sound_manager.transform.position = player.transform.position;
+    //     }
+    // }
 }
