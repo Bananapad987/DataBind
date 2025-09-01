@@ -16,9 +16,6 @@ public class GameUI : MonoBehaviour
 
     int max_health = 0;
     int curr_health = 0;
-
-    public Player player;
-    public Attacker attacker;
     public TMP_Text text_box;
 
     // Heart template
@@ -28,7 +25,7 @@ public class GameUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetHealth(player.max_health, player.curr_health);
+        SetHealth(GameMaster.player.max_health, GameMaster.player.curr_health);
     }
 
     public void SetHealth(int max_health_, int curr_health_)
@@ -133,6 +130,6 @@ public class GameUI : MonoBehaviour
 
     void Update()
     {
-        text_box.text = $"{Mathf.Floor(attacker.stopwatch)}";
+        text_box.text = $"{Mathf.Floor(GameMaster.attacker.stopwatch)}";
     }
 }

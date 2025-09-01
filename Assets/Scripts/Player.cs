@@ -1,10 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public GameUI gui;
+    GameUI gui;
+    public List<Sprite> sprites;
 
     public float speed = 10;
     public int max_health = 5;
@@ -32,6 +34,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         // gui.ReloadHeartUI();
         dash_bar = GetComponentInChildren<DashBar>();
+
+        gui = GetComponentInChildren<GameUI>();
     }
 
     void FixedUpdate()
@@ -149,10 +153,12 @@ public class Player : MonoBehaviour
             return;
         }
 
-        hearts--;
+        StartCoroutine(HitFlash());
+        gui.ChangeHealth(-1);
+        curr_health--;
         GameMaster.sound_manager.PlaySFX(SoundManager.SFX.hit, Vector3.zero);
 
-        if (hearts == 0)
+        if (curr_health == 0)
         {
             Died();
         }
